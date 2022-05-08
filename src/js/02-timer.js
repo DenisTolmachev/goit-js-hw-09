@@ -40,10 +40,8 @@ function startBtnCLick() {
       clearInterval(intervalId);
       return;
     }
-    const convertedTimerValue = convertMs(delta);
-    updateTimerValue(convertedTimerValue);
-    startBtn.disabled = true;
-    console.log(convertedTimerValue);
+    convertMs(delta);
+    console.log(convertMs(delta));
   }, 1000);
 }
 
@@ -58,15 +56,4 @@ function convertMs(ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
-}
-
-function addLeadingZero(value) {
-  return String(value).padStart(2, '0');
-}
-
-function updateTimerValue(value) {
-  daysValue.textContent = addLeadingZero(value.days);
-  hoursValue.textContent = addLeadingZero(value.hours);
-  minutesValue.textContent = addLeadingZero(value.minutes);
-  secondsValue.textContent = addLeadingZero(value.seconds);
 }
