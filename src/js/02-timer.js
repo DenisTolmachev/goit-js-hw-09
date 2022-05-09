@@ -8,8 +8,6 @@ const hoursValue = document.querySelector('[data-hours]');
 const minutesValue = document.querySelector('[data-minutes]');
 const secondsValue = document.querySelector('[data-seconds]');
 
-const today = new Date();
-
 let intervalId = null;
 
 startBtn.disabled = true;
@@ -21,7 +19,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (selectedDates[0] <= today) {
+    if (selectedDates[0] <= new Date()) {
       Notiflix.Notify.failure('Please choose a date in the future');
       startBtn.disabled = true;
     } else {
@@ -34,14 +32,16 @@ const flatpickrDate = flatpickr('#datetime-picker', options);
 
 function startBtnCLick() {
   intervalId = setInterval(() => {
+    const today = new Date();
     const deadline = flatpickrDate.selectedDates[0];
     const delta = deadline.getTime() - today.getTime();
     if (delta < 0) {
       clearInterval(intervalId);
       return;
     }
-    convertMs(delta);
-    console.log(convertMs(delta));
+    const convertedTimerValue = convertMs(delta);
+    updateTimerValue(convertedTimerValue);
+    startBtn.disabled = true;
   }, 1000);
 }
 
@@ -57,3 +57,14 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
+function addLeadingZero(value) {
+   return String(value).padStart(2, '0');
+ }
+ 
+ function updateTimerValue(value) {
+   daysValue.textContent = addLeadingZero(value.days);
+   hoursValue.textContent = addLeadingZero(value.hours);
+   minutesValue.textContent = addLeadingZero(value.minutes);
+   secondsValue.textContent = addLeadingZero(value.seconds);
+ }
