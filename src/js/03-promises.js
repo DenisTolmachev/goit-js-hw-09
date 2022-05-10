@@ -4,30 +4,31 @@ const generatorForm = document.querySelector('.form');
 let formData = {};
 
 const inputHandler = e => {
-   formData[e.target.name] = e.target.value;
-   console.log(formData);
-}
+  formData[e.target.name] = e.target.value;
+};
 
-const position = formData.step;
-const delay = formData.delay;
-const amount = formData.amount;
-
-
-function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  if (shouldResolve) {
-    // Fulfill
-  } else {
-    // Reject
-  }
-}
-
-createPromise(position,delay)
-  .then(({ position, delay }) => {
-   Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-   Notiflix.Notify.warning(`❌ Rejected promise ${position} in ${delay}ms`);
+const createPromise = (position, delay) => {
+  return new Promise((resolve, reject) => {
+    const shouldResolve = Math.random() > 0.3;
+    if (shouldResolve) {
+      resolve(`✅ Fulfilled promise ${position} in ${delay}ms`);
+    } else {
+      reject(`❌ Rejected promise ${position} in ${delay}ms`);
+    }
   });
+};
+
+const submitHandler = e => {
+  e.preventDefault();
+  for (let i = 0; i < formData.amount; i += 1) {
+    setTimeout(() => {
+      createPromise(i + 1, +formData.delay + i * +formData.step)
+        .then(message => Notiflix.Notify.success(message))
+        .catch(message => Notiflix.Notify.failure(message));
+    }, +formData.delay + i * +formData.step);
+  }
+  e.currentTarget.reset();
+};
 
 generatorForm.addEventListener('input', inputHandler);
+generatorForm.addEventListener('submit', submitHandler);
