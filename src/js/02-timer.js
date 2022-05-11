@@ -21,6 +21,8 @@ const options = {
     if (selectedDates[0] <= new Date()) {
       Notiflix.Notify.failure('Please choose a date in the future');
       startBtn.disabled = true;
+      clearInterval(intervalId);
+      resetTimerValue()
     } else {
       startBtn.disabled = false;
     }
@@ -66,4 +68,11 @@ function addLeadingZero(value) {
    hoursValue.textContent = addLeadingZero(value.hours);
    minutesValue.textContent = addLeadingZero(value.minutes);
    secondsValue.textContent = addLeadingZero(value.seconds);
+ }
+
+ function resetTimerValue() {
+   daysValue.textContent = '00';
+   hoursValue.textContent = '00';
+   minutesValue.textContent = '00';
+   secondsValue.textContent = '00';
  }
