@@ -7,8 +7,6 @@ function getRandomHexColor() {
  const body = document.querySelector('body');
  let timerId = null;
  
- stopSwitcherBtn.disabled = true;
- 
  startSwitcherBtn.addEventListener('click', () => {
    timerId = setInterval(() => {
      const color = getRandomHexColor();
