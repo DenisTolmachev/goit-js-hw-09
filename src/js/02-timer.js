@@ -10,7 +10,6 @@ const secondsValue = document.querySelector('[data-seconds]');
 
 let intervalId = null;
 
-startBtn.disabled = true;
 startBtn.addEventListener('click', startBtnCLick);
 
 const options = {
